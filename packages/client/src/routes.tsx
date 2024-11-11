@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import Quiz from "./pages/Quiz";
+import DashboardLayout from "./components/DashboardLayout";
 
 export const routes = createBrowserRouter([
   {
@@ -8,6 +9,10 @@ export const routes = createBrowserRouter([
   },
   {
     path: "/quiz",
-    element: <Quiz />,
+    element: (
+      <DashboardLayout>
+        <Quiz />
+      </DashboardLayout>
+    ),
   },
 ]);

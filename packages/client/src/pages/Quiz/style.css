@@ -1,0 +1,26 @@
+.dnd_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 39rem;
+  height: 39rem;
+  background-color: white;
+  border-radius: 100%;
+  border: 2px dotted #999;
+}
+
+.quiz_label {
+  position: absolute;
+  top: 1rem;
+  left: 5rem;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.quiz_start {
+  position: absolute;
+  top: 1rem;
+  right: 5rem;
+  font-size: 20px;
+  font-weight: bold;
+}

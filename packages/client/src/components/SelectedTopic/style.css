@@ -1,0 +1,15 @@
+.selected_item {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border: 2px solid;
+  border-radius: 50%;
+  background-color: white;
+  color: black;
+  font-size: 12px;
+  font-weight: bold;
+}
