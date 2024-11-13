@@ -18,7 +18,7 @@ const QuizTopic: React.FC<any> = ({ item, index, style = {} }) => {
   return (
     <div
       key={index}
-      className="quiz_item"
+      className="quiz_item z-50"
       ref={dragRef}
       style={
         {

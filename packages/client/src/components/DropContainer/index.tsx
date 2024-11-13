@@ -8,12 +8,13 @@ const DropContainer: React.FC<any> = ({ setShowItems }) => {
   useEffect(() => {
     if (selectedTopics?.length == 2) {
       setSelectedTopics([
-        selectedTopics[0],
+        { ...selectedTopics[0], type: "left" },
         {
           index: 5,
+          type: "center",
           item: "Intersection",
         },
-        selectedTopics[1],
+        { ...selectedTopics[1], type: "right" },
       ]);
       setShowItems(false);
     }
