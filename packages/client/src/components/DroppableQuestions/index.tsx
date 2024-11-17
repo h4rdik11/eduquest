@@ -2,17 +2,29 @@ import { Alert } from "antd";
 import React from "react";
 import { useDrag } from "react-dnd";
 
-const DroppableQuestions: React.FC<any> = ({ key, index, item }) => {
+const DroppableQuestions: React.FC<any> = ({
+  key,
+  index,
+  item,
+  id,
+  disabled,
+}) => {
   const [{ opacity, borderRadius }, dragRef] = useDrag(
     () => ({
-      type: "question",
-      item: { item, index },
+      type: disabled ? "none" : "question",
+      item: () => {
+        if (disabled) {
+          return null;
+        } else {
+          return { item, index, id };
+        }
+      },
       collect: (monitor) => ({
         opacity: monitor.isDragging() ? 0.5 : 1,
         borderRadius: 99999,
       }),
     }),
-    []
+    [disabled]
   );
 
   return (
@@ -22,7 +34,8 @@ const DroppableQuestions: React.FC<any> = ({ key, index, item }) => {
       ref={dragRef}
       style={
         {
-          opacity,
+          opacity: disabled ? 0.5 : opacity,
+          cursor: disabled ? "not-allowed" : "pointer",
           borderRadius,
         } as any
       }

@@ -1,27 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useDrop } from "react-dnd";
 import SelectedTopic from "../SelectedTopic";
 
-const DropContainer: React.FC<any> = ({ setShowItems }) => {
-  const [selectedTopics, setSelectedTopics] = useState<any[]>([]);
-
-  useEffect(() => {
-    if (selectedTopics?.length == 2) {
-      setSelectedTopics([
-        { ...selectedTopics[0], type: "left" },
-        {
-          index: 5,
-          type: "center",
-          item: "Intersection",
-        },
-        { ...selectedTopics[1], type: "right" },
-      ]);
-      setShowItems(false);
-    }
-  }, [selectedTopics]);
-
+const DropContainer: React.FC<any> = ({
+  onAnswer,
+  selectedTopics,
+  setSelectedTopics,
+}) => {
   function addItem(item: any) {
-    setSelectedTopics((prevState) => [...prevState, item]);
+    setSelectedTopics((prevState: any) => [...prevState, item]);
   }
 
   const [_, drop] = useDrop(() => ({
@@ -38,12 +25,12 @@ const DropContainer: React.FC<any> = ({ setShowItems }) => {
     >
       {!!selectedTopics?.length ? (
         <div className="h-full w-full flex items-center justify-center">
-          {selectedTopics?.map((item) => (
-            <SelectedTopic {...item} />
+          {selectedTopics?.map((item: any) => (
+            <SelectedTopic {...item} onAnswer={onAnswer} />
           ))}
         </div>
       ) : (
-        "Drop topic here"
+        "Drop topics of the same color here"
       )}
     </div>
   );

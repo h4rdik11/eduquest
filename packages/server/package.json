@@ -3,13 +3,26 @@
   "version": "1.0.0",
   "main": "index.ts",
   "license": "MIT",
+  "scripts": {
+    "dev": "env-cmd nodemon server.js"
+  },
   "dependencies": {
     "@koa/multer": "^3.0.2",
+    "body-parser": "^1.20.3",
+    "colors": "^1.4.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.1",
     "koa": "^2.15.3",
     "koa-bodyparser": "^4.4.1",
     "koa-json": "^2.0.2",
     "koa-logger": "^3.2.1",
     "koa-router": "^13.0.1",
+    "mongoose": "^8.8.1",
     "typescript": "^5.6.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.0",
+    "env-cmd": "^10.1.0",
+    "nodemon": "^3.1.7"
   }
 }

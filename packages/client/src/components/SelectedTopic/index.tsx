@@ -1,14 +1,23 @@
-import React, { useState } from "react";
-import { useDrop } from "react-dnd";
-import "./style.css";
-import clsx from "clsx";
 import { Badge } from "antd";
-import Left from "../../assets/Left.svg";
+import clsx from "clsx";
+import React, { useEffect, useState } from "react";
+import { useDrop } from "react-dnd";
 import Center from "../../assets/Center.svg";
+import Left from "../../assets/Left.svg";
 import Right from "../../assets/Right.svg";
+import "./style.css";
 
-const SelectedTopic: React.FC<any> = ({ type, item }) => {
+const SelectedTopic: React.FC<any> = ({ type, item, topics, onAnswer }) => {
   const [answers, setAnswers] = useState<any[]>([]);
+
+  useEffect(() => {
+    const newAnswers: any = {};
+    answers?.forEach((data) => {
+      newAnswers[data.id] = topics;
+    });
+    onAnswer?.(newAnswers);
+  }, [answers, topics]);
+
   const [_, drop] = useDrop(() => ({
     accept: "question",
     drop(item: any) {
@@ -26,8 +35,6 @@ const SelectedTopic: React.FC<any> = ({ type, item }) => {
         return Center;
     }
   };
-
-  console.log(answers);
 
   const getStyles = () => {
     switch (type) {
