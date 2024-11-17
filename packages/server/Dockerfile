@@ -1,8 +1,9 @@
-# syntax = docker/dockerfile:1
-
 # Adjust NODE_VERSION as desired
 ARG NODE_VERSION=20.11.0
 FROM node:${NODE_VERSION}-slim as base
+
+ENV DB_USER=root
+ENV DB_PASS=2F1pXJhnN8MuvuEC
 
 # Node.js app lives here
 WORKDIR /server
@@ -16,6 +17,8 @@ RUN npm install
 
 # Copy application code
 COPY . .
+
+RUN ls -la
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
