@@ -95,6 +95,7 @@ const Quiz = () => {
   };
 
   const onSubmit = () => {
+    console.log(answers);
     setTimerInterval(null);
     setTimer(0);
     setSubmitLoading(true);

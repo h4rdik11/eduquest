@@ -33,15 +33,18 @@ router.delete("/:id", async (request, response) => {
 router.get("/get_score", async (request, response) => {
   const questions = request.body;
   let score = 0;
-  for (let i = 0; i < questions.length; i++) {
-    const question = questions[i];
-    const topics = question.topics;
-    const dbQuestion = await QuestionModel.findOne({ topics });
-    if (dbQuestion) {
+  for (let question in questions) {
+    const questionTopics = questions[question];
+    const questionTopicsDB = await QuestionModel.find({ _id: question });
+    const questionTopicsDBTopics = questionTopicsDB[0].topics;
+    if (
+      questionTopicsDBTopics.includes(questionTopics[0]) &&
+      questionTopicsDBTopics.includes(questionTopics[1])
+    ) {
       score += 1;
     }
   }
-  response.status(200).json({ score: score / 5 });
+  response.status(200).json({ score });
 });
 
 module.exports = router;
