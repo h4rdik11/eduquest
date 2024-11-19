@@ -30,4 +30,18 @@ router.delete("/:id", async (request, response) => {
   response.status(200).json({ message: "Question deleted successfully!!" });
 });
 
+router.get("/get_score", async (request, response) => {
+  const questions = request.body;
+  let score = 0;
+  for (let i = 0; i < questions.length; i++) {
+    const question = questions[i];
+    const topics = question.topics;
+    const dbQuestion = await QuestionModel.findOne({ topics });
+    if (dbQuestion) {
+      score += 1;
+    }
+  }
+  response.status(200).json({ score: score / 5 });
+});
+
 module.exports = router;
