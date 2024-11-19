@@ -185,6 +185,7 @@ const Quiz = () => {
                   color="primary"
                   type="primary"
                   onClick={onSubmit}
+                  loading={submitLoading}
                 >
                   Submit
                 </Button>
