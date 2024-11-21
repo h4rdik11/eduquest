@@ -17,3 +17,7 @@ export async function addQuestionApi(data: any) {
 export async function deleteQuestionApi(id: string) {
   return await axios.delete(`/api/question/${id}`);
 }
+
+export async function getScoreApi(answers: any) {
+  return await axios.post("/api/question/get_score", answers);
+}

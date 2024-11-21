@@ -1,16 +1,16 @@
+import { Button } from "antd";
+import clsx from "clsx";
 import { memo, useEffect, useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import DropContainer from "../../components/DropContainer";
-import QuizTopic from "../../components/QuizTopic";
-import "./style.css";
-import DroppableQuestions from "../../components/DroppableQuestions";
-import { getQuestionsFromTopicsApi } from "../../api/question";
-import { Button } from "antd";
-import clsx from "clsx";
-import { items, quizMap } from "../../constants";
 import { getConfigApi } from "../../api/config";
+import { getQuestionsFromTopicsApi, getScoreApi } from "../../api/question";
 import CustomModal from "../../components/CustomModal";
+import DropContainer from "../../components/DropContainer";
+import DroppableQuestions from "../../components/DroppableQuestions";
+import QuizTopic from "../../components/QuizTopic";
+import { items, quizMap } from "../../constants";
+import "./style.css";
 
 const Quiz = () => {
   const [showItems, setShowItems] = useState(true);
@@ -38,6 +38,23 @@ const Quiz = () => {
       setTimer(response.data.timer);
     });
   }, []);
+
+  useEffect(() => {
+    if (
+      selectedTopics?.length === 3 &&
+      quizMap[selectedTopics[0].item].combo !== selectedTopics[2].item
+    ) {
+      setSelectedTopics([]);
+      setModalData({
+        isVisible: true,
+        icon: "❌",
+        title: "OOPS!!",
+        message: "Drag topics of same color only!!",
+        primaryButtonText: "Reset",
+        onPrimaryAction: onReset,
+      });
+    }
+  }, [selectedTopics]);
 
   useEffect(() => {
     if (timer <= 0) {
@@ -90,22 +107,30 @@ const Quiz = () => {
     setQuestions([]);
     setAnswers({});
     setSelectedTopics([]);
+    clearInterval(timerInterval);
     setTimerInterval(null);
     setTimer(originalTimer);
+    setModalData({
+      isVisible: false,
+    });
   };
 
   const onSubmit = () => {
-    console.log(answers);
+    clearInterval(timerInterval);
     setTimerInterval(null);
     setTimer(0);
     setSubmitLoading(true);
-    setModalData({
-      isVisible: true,
-      icon: "🏅",
-      title: "Congratulations you finished!",
-      message: "You scored 80%",
-      primaryButtonText: "Retake Quiz",
-      onPrimaryAction: onReset,
+    getScoreApi(answers).then((response) => {
+      setModalData({
+        isVisible: true,
+        icon: "🏅",
+        title: "Congratulations you finished!",
+        message: `You scored ${parseFloat(
+          `${(response.data.score / questions.length) * 100}`
+        ).toFixed(2)}%`,
+        primaryButtonText: "Retake Quiz",
+        onPrimaryAction: onReset,
+      });
     });
     setSubmitLoading(false);
   };
