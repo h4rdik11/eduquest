@@ -42,7 +42,8 @@ const Quiz = () => {
   useEffect(() => {
     if (
       selectedTopics?.length === 3 &&
-      quizMap[selectedTopics[0].item].combo !== selectedTopics[2].item
+      quizMap[selectedTopics[0].item].combo !==
+        quizMap[selectedTopics[2].item].combo
     ) {
       setSelectedTopics([]);
       setModalData({
@@ -92,7 +93,7 @@ const Quiz = () => {
 
   const onStart = async () => {
     const response = await getQuestionsFromTopicsApi(
-      selectedTopics.map((item) => item.item)
+      quizMap[selectedTopics[0].item].combo
     );
     setQuestions(response.data.questions);
     setTimerInterval(

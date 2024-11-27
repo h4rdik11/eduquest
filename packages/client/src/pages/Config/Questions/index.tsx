@@ -1,13 +1,13 @@
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, message, Popconfirm, Space, Table, Tag } from "antd";
+import { Button, message, Popconfirm, Space, Table } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import { deleteQuestionApi, getAllQuestionsApi } from "../../../api/question";
-import { quizMap } from "../../../constants";
 import AddQuestion from "./AddQuestion";
 
 const QuestionsTable = () => {
   const [data, setData] = useState<any[]>([]);
   const [addQuestionToggle, setAddQuestionToggle] = useState(false);
+  const [editQuestionData, setEditQuestionData] = useState<any>(null);
 
   const getAllQuestions = useCallback(() => {
     getAllQuestionsApi().then((response) => {
@@ -28,6 +28,11 @@ const QuestionsTable = () => {
       .catch(() => {
         message.error("Something went wrong!!");
       });
+  };
+
+  const onEdit = (item: any) => () => {
+    setAddQuestionToggle(true);
+    setEditQuestionData(item);
   };
 
   const columns: any[] = [
@@ -53,28 +58,15 @@ const QuestionsTable = () => {
     {
       title: "Topics",
       key: "topics",
-      dataIndex: "tags",
+      dataIndex: "topics",
       width: "20%",
-      render: (_: any, item: any) => {
-        return (
-          <>
-            {item?.topics?.map((tag: string) => {
-              return (
-                <Tag color={quizMap[tag].color} key={tag}>
-                  {tag.toUpperCase()}
-                </Tag>
-              );
-            })}
-          </>
-        );
-      },
     },
     {
       title: "Action",
       key: "action",
       render: (_: any, item: any) => (
         <Space size="middle">
-          <Button type="primary" size="small">
+          <Button type="primary" size="small" onClick={onEdit(item)}>
             <EditOutlined />
           </Button>
           <Popconfirm
@@ -105,7 +97,11 @@ const QuestionsTable = () => {
         />
       )}
       {addQuestionToggle && (
-        <AddQuestion onBack={setAddQuestionToggle} onDone={getAllQuestions} />
+        <AddQuestion
+          editData={editQuestionData}
+          onBack={setAddQuestionToggle}
+          onDone={getAllQuestions}
+        />
       )}
     </>
   );
