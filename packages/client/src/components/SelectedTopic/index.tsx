@@ -1,29 +1,41 @@
-import { Badge } from "antd";
 import clsx from "clsx";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useDrop } from "react-dnd";
 import Center from "../../assets/Center.svg";
 import Left from "../../assets/Left.svg";
 import Right from "../../assets/Right.svg";
+import DroppableBadge from "../DroppableBadge";
 import "./style.css";
 
-const SelectedTopic: React.FC<any> = ({ type, item, topics, onAnswer }) => {
-  const [answers, setAnswers] = useState<any[]>([]);
+const SelectedTopic: React.FC<any> = ({
+  type,
+  item,
+  topics,
+  onAnswer,
+  answers,
+}) => {
+  const currentAnswers = Object.keys(answers)
+    .filter(
+      (key) => JSON.stringify(topics) === JSON.stringify(answers[key].topics)
+    )
+    .map((key) => answers[key]);
 
-  useEffect(() => {
-    const newAnswers: any = {};
-    answers?.forEach((data) => {
-      newAnswers[data.id] = topics;
-    });
-    onAnswer?.(newAnswers);
-  }, [answers, topics]);
-
-  const [_, drop] = useDrop(() => ({
-    accept: "question",
-    drop(item: any) {
-      setAnswers((prevState) => [...prevState, item]);
-    },
-  }));
+  const [_, drop] = useDrop(
+    () => ({
+      accept: "question",
+      drop(item: any) {
+        const newAnswers: any = {};
+        Object.keys(answers)
+          .filter((key) => key !== item.id)
+          .forEach((key) => {
+            newAnswers[key] = answers[key];
+          });
+        newAnswers[item.id] = { ...item, topics };
+        onAnswer?.(newAnswers);
+      },
+    }),
+    [answers, onAnswer]
+  );
 
   const VennPart = () => {
     switch (type) {
@@ -64,9 +76,17 @@ const SelectedTopic: React.FC<any> = ({ type, item, topics, onAnswer }) => {
           "right-36": type === "right",
         })}
       >
-        {answers?.map((item) => (
-          <Badge count={item?.index} />
-        ))}
+        {currentAnswers?.map((item: any) => {
+          return (
+            <DroppableBadge
+              index={item?.index}
+              id={item?.id}
+              key={item?.id}
+              item={item?.item}
+              count={item?.index}
+            />
+          );
+        })}
       </div>
       {type !== "center" && (
         <div

@@ -10,6 +10,11 @@ const AddQuestion: React.FC<any> = ({ onBack, onDone, editData }) => {
     topics: "",
     answers: [],
   });
+  const [errors, setErrors] = useState({
+    question: "",
+    topics: "",
+    answers: "",
+  });
 
   useEffect(() => {
     if (editData) {
@@ -37,7 +42,27 @@ const AddQuestion: React.FC<any> = ({ onBack, onDone, editData }) => {
     setData(newData);
   };
 
+  const handleBack = () => {
+    setData({
+      question: "",
+      topics: "",
+      answers: [],
+    });
+    onBack?.(false);
+  };
+
   const onSubmit = async () => {
+    const newErrors: any = {};
+    Object.keys(data).forEach((key) => {
+      if (data[key].length === 0) {
+        newErrors[key] = "Required";
+      }
+    });
+    if (Object.keys(newErrors).length !== 0) {
+      setErrors(newErrors);
+      return;
+    }
+
     setLoading(true);
     addQuestionApi(data)
       .then(() => {
@@ -67,7 +92,11 @@ const AddQuestion: React.FC<any> = ({ onBack, onDone, editData }) => {
           placeholder="Question"
           value={data?.question}
           onChange={onChange("question")}
+          status={errors["question"] ? "error" : ""}
         />
+        {errors["question"] ? (
+          <span className="text-red-500">{errors["question"]}</span>
+        ) : null}
       </div>
       <div className="mb-1">
         <span>Topic Combo</span>
@@ -78,7 +107,11 @@ const AddQuestion: React.FC<any> = ({ onBack, onDone, editData }) => {
           onChange={onChange("topics")}
           style={{ width: "100%" }}
           options={topicOptions}
+          status={errors["topics"] ? "error" : ""}
         />
+        {errors["topics"] ? (
+          <span className="text-red-500">{errors["topics"]}</span>
+        ) : null}
       </div>
       <div className="mb-1">
         <span>Answers</span>
@@ -91,7 +124,11 @@ const AddQuestion: React.FC<any> = ({ onBack, onDone, editData }) => {
           onChange={onChange("answers")}
           style={{ width: "100%" }}
           options={options}
+          status={errors["answers"] ? "error" : ""}
         />
+        {errors["answers"] ? (
+          <span className="text-red-500">{errors["answers"]}</span>
+        ) : null}
       </div>
       <div>
         <Button
@@ -103,7 +140,7 @@ const AddQuestion: React.FC<any> = ({ onBack, onDone, editData }) => {
         >
           {!!editData ? "Update Question" : "Add Question"}
         </Button>
-        <Button disabled={loading} onClick={() => onBack(false)}>
+        <Button disabled={loading} onClick={handleBack}>
           Back
         </Button>
       </div>

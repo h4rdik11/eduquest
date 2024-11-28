@@ -117,11 +117,15 @@ const Quiz = () => {
   };
 
   const onSubmit = () => {
+    const finalAnswers: any = {};
+    Object.keys(answers).forEach((key) => {
+      finalAnswers[key] = answers[key].topics;
+    });
     clearInterval(timerInterval);
     setTimerInterval(null);
     setTimer(0);
     setSubmitLoading(true);
-    getScoreApi(answers).then((response) => {
+    getScoreApi(finalAnswers).then((response) => {
       setModalData({
         isVisible: true,
         icon: "🏅",
@@ -176,6 +180,7 @@ const Quiz = () => {
                 ))}
               <DropContainer
                 setShowItems={setShowItems}
+                answers={answers}
                 onAnswer={onAnswer}
                 selectedTopics={selectedTopics}
                 setSelectedTopics={setSelectedTopics}

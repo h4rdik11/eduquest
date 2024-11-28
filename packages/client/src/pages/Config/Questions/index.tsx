@@ -1,8 +1,9 @@
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, message, Popconfirm, Space, Table } from "antd";
+import { Button, message, Popconfirm, Space, Table, Tag } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import { deleteQuestionApi, getAllQuestionsApi } from "../../../api/question";
 import AddQuestion from "./AddQuestion";
+import { quizMap } from "../../../constants";
 
 const QuestionsTable = () => {
   const [data, setData] = useState<any[]>([]);
@@ -35,6 +36,11 @@ const QuestionsTable = () => {
     setEditQuestionData(item);
   };
 
+  const handleBack = (toggle: boolean) => {
+    setEditQuestionData(null);
+    setAddQuestionToggle(toggle);
+  };
+
   const columns: any[] = [
     {
       title: () => (
@@ -53,13 +59,20 @@ const QuestionsTable = () => {
       ),
       dataIndex: "question",
       key: "question",
-      width: "70%",
+      width: "60%",
     },
     {
       title: "Topics",
       key: "topics",
       dataIndex: "topics",
-      width: "20%",
+      width: "30%",
+      render: (_: any, item: any) => {
+        return (
+          <Tag color={quizMap[item?.topics.split(" & ")[0]].color}>
+            {item?.topics}
+          </Tag>
+        );
+      },
     },
     {
       title: "Action",
@@ -99,7 +112,7 @@ const QuestionsTable = () => {
       {addQuestionToggle && (
         <AddQuestion
           editData={editQuestionData}
-          onBack={setAddQuestionToggle}
+          onBack={handleBack}
           onDone={getAllQuestions}
         />
       )}

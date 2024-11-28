@@ -3,6 +3,7 @@ import { useDrop } from "react-dnd";
 import SelectedTopic from "../SelectedTopic";
 
 const DropContainer: React.FC<any> = ({
+  answers,
   onAnswer,
   selectedTopics,
   setSelectedTopics,
@@ -26,7 +27,7 @@ const DropContainer: React.FC<any> = ({
       {!!selectedTopics?.length ? (
         <div className="h-full w-full flex items-center justify-center">
           {selectedTopics?.map((item: any) => (
-            <SelectedTopic {...item} onAnswer={onAnswer} />
+            <SelectedTopic {...item} answers={answers} onAnswer={onAnswer} />
           ))}
         </div>
       ) : (

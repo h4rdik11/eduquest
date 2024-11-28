@@ -29,6 +29,7 @@ const Timer = () => {
 
   return (
     <div className="flex flex-col">
+      <span>Timer (seconds)</span>
       <Input
         className="w-1/2"
         placeholder="Timer"
