@@ -9,8 +9,7 @@ router.post("/get_score", async (request, response) => {
     const questionTopicsDB = await QuestionModel.find({ _id: question });
     const questionTopicsDBTopics = questionTopicsDB[0].answers;
     if (
-      questionTopicsDBTopics.includes(questionTopics[0]) &&
-      questionTopicsDBTopics.includes(questionTopics[1])
+      JSON.stringify(questionTopicsDBTopics) === JSON.stringify(questionTopics)
     ) {
       score += 1;
     }
@@ -43,8 +42,8 @@ router.post("/", async (request, response) => {
 
 router.put("/", async (request, response) => {
   try {
-    const data = request.body.data;
-    await QuestionModel.findOneAndUpdate({ id: data._id }, data);
+    const { _id, ...rest } = request.body.data;
+    const val = await QuestionModel.replaceOne({ _id: _id }, rest);
     response.status(200).json({ message: "Question updated Successfully!!" });
   } catch (err) {
     console.log(err);

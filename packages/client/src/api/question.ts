@@ -9,9 +9,15 @@ export async function getAllQuestionsApi() {
 }
 
 export async function addQuestionApi(data: any) {
-  return await axios.post("/api/question", {
-    data,
-  });
+  if (data._id) {
+    return await axios.put(`/api/question`, {
+      data,
+    });
+  } else {
+    return await axios.post("/api/question", {
+      data,
+    });
+  }
 }
 
 export async function deleteQuestionApi(id: string) {

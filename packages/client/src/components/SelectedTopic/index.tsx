@@ -13,6 +13,7 @@ const SelectedTopic: React.FC<any> = ({
   topics,
   onAnswer,
   answers,
+  setDroppedOnChild,
 }) => {
   const currentAnswers = Object.keys(answers)
     .filter(
@@ -24,6 +25,7 @@ const SelectedTopic: React.FC<any> = ({
     () => ({
       accept: "question",
       drop(item: any) {
+        setDroppedOnChild(true);
         const newAnswers: any = {};
         Object.keys(answers)
           .filter((key) => key !== item.id)

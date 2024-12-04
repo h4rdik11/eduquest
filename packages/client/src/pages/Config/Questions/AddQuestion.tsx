@@ -13,7 +13,6 @@ const AddQuestion: React.FC<any> = ({ onBack, onDone, editData }) => {
   const [errors, setErrors] = useState({
     question: "",
     topics: "",
-    answers: "",
   });
 
   useEffect(() => {
@@ -54,7 +53,7 @@ const AddQuestion: React.FC<any> = ({ onBack, onDone, editData }) => {
   const onSubmit = async () => {
     const newErrors: any = {};
     Object.keys(data).forEach((key) => {
-      if (data[key].length === 0) {
+      if (key !== "answers" && data[key].length === 0) {
         newErrors[key] = "Required";
       }
     });
@@ -124,11 +123,7 @@ const AddQuestion: React.FC<any> = ({ onBack, onDone, editData }) => {
           onChange={onChange("answers")}
           style={{ width: "100%" }}
           options={options}
-          status={errors["answers"] ? "error" : ""}
         />
-        {errors["answers"] ? (
-          <span className="text-red-500">{errors["answers"]}</span>
-        ) : null}
       </div>
       <div>
         <Button

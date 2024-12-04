@@ -9,7 +9,6 @@ router.get("/", async (_, response) => {
 router.post("/:id?", async (request, response) => {
   try {
     const data = request.body;
-    console.log(request.body);
     const id = request.params.id;
     if (id) {
       await ConfigModel.findOneAndUpdate({ _id: id }, data, {
