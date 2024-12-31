@@ -8,9 +8,7 @@ router.post("/get_score", async (request, response) => {
     const questionTopics = questions[question];
     const questionTopicsDB = await QuestionModel.find({ _id: question });
     const questionTopicsDBTopics = questionTopicsDB[0].answers;
-    if (
-      JSON.stringify(questionTopicsDBTopics) === JSON.stringify(questionTopics)
-    ) {
+    if (questionTopicsDBTopics.every((item) => questionTopics.includes(item))) {
       score += 1;
     }
   }
