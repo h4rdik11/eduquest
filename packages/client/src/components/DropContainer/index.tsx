@@ -66,7 +66,7 @@ const DropContainer: React.FC<any> = ({
           {selectedTopics?.length === 3 && (
             <div
               ref={answerDrop}
-              className="flex flex-col items-center absolute bottom-12 border border-dashed border-black h-32 w-32 rounded-lg"
+              className="bg-slate-200 z-10 flex flex-col items-center absolute bottom-12 border border-dashed border-black h-32 w-32 rounded-lg"
             >
               <span className="font-bold">No Answer</span>
               <div className="self-center">

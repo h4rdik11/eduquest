@@ -64,8 +64,10 @@ const AddQuestion: React.FC<any> = ({ onBack, onDone, editData }) => {
 
     setLoading(true);
     addQuestionApi(data)
-      .then(() => {
-        message.success("Question added successfully!!");
+      .then((response) => {
+        message.success(
+          response?.data?.message ?? "Question added successfully!!"
+        );
         onBack(false);
         onDone?.();
       })

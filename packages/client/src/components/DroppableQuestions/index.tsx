@@ -30,7 +30,7 @@ const DroppableQuestions: React.FC<any> = ({
   return (
     <div
       key={key}
-      className="mb-3"
+      className="mb-3 w-full"
       ref={dragRef}
       style={
         {
