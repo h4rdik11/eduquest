@@ -3,6 +3,7 @@ import clsx from "clsx";
 import { memo, useEffect, useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { debounce } from "throttle-debounce";
 import { getConfigApi } from "../../api/config";
 import { getQuestionsFromTopicsApi, getScoreApi } from "../../api/question";
 import CustomModal from "../../components/CustomModal";
@@ -91,7 +92,8 @@ const Quiz = () => {
     setAnswers((prevState: any) => ({ ...prevState, ...answer }));
   };
 
-  const onStart = async () => {
+  const onStart = debounce(200, async () => {
+    clearInterval(timerInterval);
     const response = await getQuestionsFromTopicsApi(
       quizMap[selectedTopics[0].item].combo
     );
@@ -101,7 +103,7 @@ const Quiz = () => {
         setTimer((prevState) => prevState - 1);
       }, 1000)
     );
-  };
+  });
 
   const onReset = () => {
     setShowItems(true);
